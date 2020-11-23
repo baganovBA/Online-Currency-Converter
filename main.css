@@ -81,6 +81,8 @@ main{
     width: 259px;
     /* border: 1px solid gray; */
     color: #9F9F9F;
+    box-sizing: border-box;
+    
 }
 
 .i_have{
@@ -109,11 +111,11 @@ main{
     list-style-type: none;
     width: 50px;
     font-size: 12px;
-    /* line-height: 14px; */
-    /* padding-top: 10px; */
     text-align: center;
-    /* border: 1px solid #E5E5E5; */
     border-right: 1px solid #E5E5E5;
+}
+.list_currency_item:hover{
+    cursor: pointer;
 }
 
 .list_currency_item:last-child{
@@ -125,13 +127,14 @@ main{
     color: #9F9F9F;
     font-size: 12px;
     line-height: 14px;
+    height: 100%;
 }
 
 .block_input{
-    width: 100%;
     border: 1px solid #E5E5E5;
     border-radius: 5px;
     padding-left: 14px;
+    padding-bottom: 14px;
 }
 
 .input_currency{
@@ -145,5 +148,12 @@ main{
 .strelka{
     width: 36.85px;
     height: 31.77px;
-    margin-top: auto;
+    margin: auto;
+
 }
+
+.selected{
+    background-color: #833AE0;
+    color: white;
+}
+
