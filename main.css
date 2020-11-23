@@ -62,7 +62,12 @@ main{
 .conteiner{
     width: 641px;
     /* border: 1px solid gray; */
+}
 
+.block_conteiner{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .title_currency{
@@ -135,4 +140,10 @@ main{
     border: none;
     font-size: 36px;
     margin-bottom: 20px;
+}
+
+.strelka{
+    width: 36.85px;
+    height: 31.77px;
+    margin-top: auto;
 }
