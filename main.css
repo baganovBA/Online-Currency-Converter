@@ -100,6 +100,9 @@ main{
     flex-direction: row;
     justify-content: space-between;
 }
+.block_conteiner.reverse{
+    flex-direction: row-reverse;
+}
 
 .title_currency{
     font-weight: bold;
@@ -116,8 +119,9 @@ main{
     
 }
 
+
 .i_have{
-    height: 30px;
+    height: 25px;
     font-size: 14px;
     margin-bottom: 0px;
     padding-top: 10px;
@@ -187,7 +191,7 @@ main{
 .swap{
     width: 36.85px;
     height: 31.77px;
-    margin-top : 125px;
+    margin-top : 85px;
 
 }
 

@@ -7,6 +7,7 @@ const outputCurrency = document.querySelector('.output_currency');
 const curseInputUnderline = document.querySelector('.curse_input_value');
 const curseOutputUnderline = document.querySelector('.curse_output_value');
 const swap = document.querySelector('.swap');
+const blockContainer = document.querySelector('.block_conteiner.currency');
 let inputCurrentToFetch = 'RUB';
 let outputCurrentToFetch = 'USD';
 let curs = 1;
@@ -34,6 +35,17 @@ const changeCurrancyOutput = () => {
     }
 
     outputCurrency.value = input * curs;
+}
+const changeCurrancyInput = () => {
+    let output = outputCurrency.value;
+
+    output = output.replace(',', '.');
+    output = parseFloat(output);
+    if (isNaN(output)) {
+        output = 0;
+    }
+
+    inputCurrency.value = output / curs;
 }
 
 const getExchangeRate = async (inputCurrentToFetch, outputCurrentToFetch) =>{
@@ -86,6 +98,11 @@ const eventsHandler = () => {
 
     inputCurrency.addEventListener('input', event => {
         changeCurrancyOutput();
+        changeCurseUnderline();
+    })
+
+    outputCurrency.addEventListener('input', event =>{
+        changeCurrancyInput();
         changeCurseUnderline();
     })
 }
@@ -157,6 +174,10 @@ listCurrenciesOutputItems.forEach(currencyItem =>{
 });
 
 swap.addEventListener('click', event =>{
-    
-    
+    console.log('ololo', blockContainer)
+     if (blockContainer.classList.contains('reverse')) {
+        blockContainer.classList.remove('reverse')
+     } else {
+        blockContainer.classList.add('reverse')
+     }
 })
