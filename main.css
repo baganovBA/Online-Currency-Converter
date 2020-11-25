@@ -192,12 +192,15 @@ main{
     width: 36.85px;
     height: 31.77px;
     margin-top : 85px;
+}
 
+.swap:hover{
+    cursor: pointer;
 }
 
 .selected{
     background-color: #833AE0;
-    color: white;
+    color: #fff;
 }
 select{
     background: transparent;

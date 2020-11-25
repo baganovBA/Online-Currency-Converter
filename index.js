@@ -12,7 +12,7 @@ let inputCurrentToFetch = 'RUB';
 let outputCurrentToFetch = 'USD';
 let curs = 1;
 
-
+// реализация отображения экрана загрузки
 const setLoading = (loading) => {
     if (loading) {
         document.querySelector('.loading').classList.remove('back');
@@ -21,10 +21,12 @@ const setLoading = (loading) => {
     }
 }
 
+//округление значения до 6 знаков
 const amountSigns = (num) => {
     return new Intl.NumberFormat('en-US', {maximumFractionDigits: 6}).format(num)
 }
 
+// вычисление инпута вывода на основании инпута ввода
 const changeCurrancyOutput = () => {
     let input = inputCurrency.value;
 
@@ -36,6 +38,8 @@ const changeCurrancyOutput = () => {
 
     outputCurrency.value = input * curs;
 }
+
+// вычисление инпута ввода на основании инпута вывода 
 const changeCurrancyInput = () => {
     let output = outputCurrency.value;
 
@@ -48,20 +52,28 @@ const changeCurrancyInput = () => {
     inputCurrency.value = output / curs;
 }
 
+// отправка запроса на получение курса, реализация вывода экрана загрузки, отображение ошибки при неудачном сценарии 
 const getExchangeRate = async (inputCurrentToFetch, outputCurrentToFetch) =>{
-    setLoading(true);
+    const timer = setTimeout(() => {
+        setLoading(true);
+    }, 500);
+
     try {
         const response = await fetch(`https://api.ratesapi.io/api/latest?base=${inputCurrentToFetch}&symbols=${outputCurrentToFetch}`);
+        clearTimeout(timer);
         setLoading(false);
         const data = await response.json();
         return data
     } catch (error) {
         console.log('network',error);
         alert('Ошибка подключения к апи');
+        clearTimeout(timer);
         setLoading(false);
         return false;
     }
 }
+
+//Отправка запроса на получение актуального курса и далее вычисления
 const updateData = (inputCurrentToFetch,outputCurrentToFetch) =>{
     if(inputCurrentToFetch !== outputCurrentToFetch){
         getExchangeRate(inputCurrentToFetch,outputCurrentToFetch).then(promice =>{
@@ -78,12 +90,13 @@ const updateData = (inputCurrentToFetch,outputCurrentToFetch) =>{
     }
 }
 
+//вычисление курса под рамкой инпута
 const changeCurseUnderline = () => {
-    //curseInputUnderline.innerText = `1 ${inputCurrentToFetch} = ${curs} ${outputCurrentToFetch}`;
-    curseInputUnderline.innerText = "1 " + inputCurrentToFetch + " = " + curs + " " + outputCurrentToFetch;
+    curseInputUnderline.innerText = `1 ${inputCurrentToFetch} = ${curs} ${outputCurrentToFetch}`;
     curseOutputUnderline.innerText = `1 ${outputCurrentToFetch} = ${amountSigns(1/curs)} ${inputCurrentToFetch}`;
 }
 
+//Обработчики на options перезаписывание переменных для формирования запроса
 const eventsHandler = () => {
     selectInput.addEventListener('change', event => {
         inputCurrentToFetch = event.target.value;
@@ -111,29 +124,32 @@ eventsHandler();
 changeCurrancyOutput();
 updateData(inputCurrentToFetch,outputCurrentToFetch);
 
-fetch('https://api.ratesapi.io/api/latest').then((promice)=>{
-    return promice.json();
+//Получение списка валют в select -ы
+const getListCurrenciesSelect = () =>{
+    fetch('https://api.ratesapi.io/api/latest').then((promice)=>{
+        return promice.json();
 
-}).then((data)=>{
-    const {rates} = data;
-    const getCurrencies = Object.keys(rates);
-    console.log(getCurrencies);
-    
-    getCurrencies.forEach((getCurrency)=>{
-        if(getCurrency !== "RUB" && getCurrency !== "USD" && getCurrency !== "EUR" && getCurrency !== "GBP"){
-            const optionIn = document.createElement("option");
-            const optionOut = document.createElement("option");
-            optionIn.value = getCurrency;
-            optionOut.value = getCurrency;
-            optionIn.innerHTML = getCurrency;
-            optionOut.innerHTML = getCurrency;
-            selectInput.appendChild(optionIn);
-            selectOutput.appendChild(optionOut);
-        };
+    }).then((data)=>{
+        const {rates} = data;
+        const getCurrencies = Object.keys(rates);
+        console.log(getCurrencies);
+        
+        getCurrencies.forEach((getCurrency)=>{
+            if(getCurrency !== "RUB" && getCurrency !== "USD" && getCurrency !== "EUR" && getCurrency !== "GBP"){
+                const optionIn = document.createElement("option");
+                const optionOut = document.createElement("option");
+                optionIn.value = getCurrency;
+                optionOut.value = getCurrency;
+                optionIn.innerHTML = getCurrency;
+                optionOut.innerHTML = getCurrency;
+                selectInput.appendChild(optionIn);
+                selectOutput.appendChild(optionOut);
+            };
+        });
     });
-});
-
-//addEventListener для выбора валюты и отправки запроса на API
+};
+getListCurrenciesSelect();
+//Смена валюты в контейнере ввода
 listCurrenciesInputItems.forEach((currencyItem) =>{
     currencyItem.addEventListener('click', (event)=>{
         listCurrenciesInputItems.forEach((item) =>{
@@ -147,10 +163,9 @@ listCurrenciesInputItems.forEach((currencyItem) =>{
             inputCurrentToFetch = event.target.value;
         }
         updateData(inputCurrentToFetch,outputCurrentToFetch);
-        
     }); 
 })
-
+//смена валюты в контейнера вывода
 listCurrenciesOutputItems.forEach(currencyItem =>{
     currencyItem.addEventListener('click', event =>{
         listCurrenciesOutputItems.forEach((item) =>{
@@ -168,11 +183,10 @@ listCurrenciesOutputItems.forEach(currencyItem =>{
         };
 
         updateData(inputCurrentToFetch, outputCurrentToFetch);
-
-        console.trace(inputCurrentToFetch); 
     });
 });
 
+//замена контейнеров
 swap.addEventListener('click', event =>{
     console.log('ololo', blockContainer)
      if (blockContainer.classList.contains('reverse')) {
@@ -180,4 +194,4 @@ swap.addEventListener('click', event =>{
      } else {
         blockContainer.classList.add('reverse')
      }
-})
+});
