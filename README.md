@@ -1,5 +1,5 @@
 # maket-m3
-Online Currency Converter
+# Online Currency Converter
 ЗАДАНИЕ
 Разработать онлайн-конвертер валют, получая актуальные данные с открытого API:
 https://ratesapi.io/documentation/
