@@ -6,22 +6,49 @@ const inputCurrency = document.querySelector('.input_currency');
 const outputCurrency = document.querySelector('.output_currency');
 const curseInputUnderline = document.querySelector('.curse_input_value');
 const curseOutputUnderline = document.querySelector('.curse_output_value');
+const swap = document.querySelector('.swap');
 let inputCurrentToFetch = 'RUB';
 let outputCurrentToFetch = 'USD';
 let curs = 1;
+
+
+const setLoading = (loading) => {
+    if (loading) {
+        document.querySelector('.loading').classList.remove('back');
+    } else {
+        document.querySelector('.loading').classList.add('back');
+    }
+}
 
 const amountSigns = (num) => {
     return new Intl.NumberFormat('en-US', {maximumFractionDigits: 6}).format(num)
 }
 
 const changeCurrancyOutput = () => {
-    outputCurrency.value = inputCurrency.value * curs;
+    let input = inputCurrency.value;
+
+    input = input.replace(',', '.');
+    input = parseFloat(input);
+    if (isNaN(input)) {
+        input = 0;
+    }
+
+    outputCurrency.value = input * curs;
 }
 
 const getExchangeRate = async (inputCurrentToFetch, outputCurrentToFetch) =>{
-    const response = await fetch(`https://api.ratesapi.io/api/latest?base=${inputCurrentToFetch}&symbols=${outputCurrentToFetch}`);
-    const data = await response.json();
-    return data
+    setLoading(true);
+    try {
+        const response = await fetch(`https://api.ratesapi.io/api/latest?base=${inputCurrentToFetch}&symbols=${outputCurrentToFetch}`);
+        setLoading(false);
+        const data = await response.json();
+        return data
+    } catch (error) {
+        console.log('network',error);
+        alert('Ошибка подключения к апи');
+        setLoading(false);
+        return false;
+    }
 }
 const updateData = (inputCurrentToFetch,outputCurrentToFetch) =>{
     if(inputCurrentToFetch !== outputCurrentToFetch){
@@ -89,27 +116,6 @@ fetch('https://api.ratesapi.io/api/latest').then((promice)=>{
     });
 });
 
-
-
-// console.log(curs);
-
-//addEventListener для выбора валюты и отправки запроса на API
-
-
-//const allOptionsSelected = listSelected.children;
-//console.log(allOptionsSelected);
-//console.log(listCurrenciesItems);
-
-// allOptionsSelected.forEach((option)=>{
-//     option.addEventListener('click', (event)=>{
-//         if(option.classList.contains('selected')){
-//             option.classList.remove('selected')
-//         }
-//         console.log(event.target)
-//         event.target.classList.add('selected');
-//     })
-// })
-
 //addEventListener для выбора валюты и отправки запроса на API
 listCurrenciesInputItems.forEach((currencyItem) =>{
     currencyItem.addEventListener('click', (event)=>{
@@ -144,11 +150,13 @@ listCurrenciesOutputItems.forEach(currencyItem =>{
             console.log(event.target.value);
         };
 
-        
-
         updateData(inputCurrentToFetch, outputCurrentToFetch);
 
         console.trace(inputCurrentToFetch); 
-
     });
 });
+
+swap.addEventListener('click', event =>{
+    
+    
+})

@@ -9,6 +9,37 @@
 body{
     font-family: 'Roboto', sans-serif;
 }
+input{
+    outline: none;
+}
+.loading{
+    position: absolute;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+    background: #ffffffcc;
+    z-index:1;
+    text-align: center;
+    
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+
+    transition: all .3s linear;
+}
+.loading span{
+    margin-top: 227px;
+    display: block;
+    /* background-image: url(https://i.gifer.com/origin/4d/4dc11d17f5292fd463a60aa2bbb41f6a_w200.gif); 
+    background-clip: padding-box;
+     */
+}
+.loading.back{
+    z-index: -1;
+    opacity: 0;
+}
 
 .menu_bar{
     width: 100%;
@@ -153,10 +184,10 @@ main{
     margin-bottom: 20px;
 }
 
-.strelka{
+.swap{
     width: 36.85px;
     height: 31.77px;
-    margin: auto;
+    margin-top : 125px;
 
 }
 
